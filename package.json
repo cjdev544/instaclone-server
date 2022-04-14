@@ -1,0 +1,20 @@
+{
+  "name": "instaclone-server",
+  "version": "1.0.0",
+  "description": "Instagram clone server with gql apollo server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src/index.js",
+    "dev": "nodemon ./src/index.js"
+  },
+  "author": "Jefferson Campos <cjdev544@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^3.6.7",
+    "bcrypt": "^5.0.1",
+    "dotenv": "^16.0.0",
+    "graphql": "^16.3.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.11"
+  }
+}
