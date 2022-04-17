@@ -53,6 +53,7 @@ const userController = {
       const payload = {
         id: userExist.id,
         username: userExist.username,
+        name: userExist.name,
       }
       const expiresIn = '72h'
       const token = jwt.sign(payload, process.env.SECRET_WORD, { expiresIn })
@@ -62,6 +63,24 @@ const userController = {
       console.log(err)
       return err
     }
+  },
+
+  getUser: async (username) => {
+    try {
+      const userExist = await User.findOne({ username })
+
+      if (!userExist) throw new Error('Usuario no encontrado')
+
+      return userExist
+    } catch (err) {
+      console.log(err)
+      return err
+    }
+  },
+
+  updateAvatar: async (file) => {
+    console.log(file)
+    return null
   },
 }
 

@@ -8,11 +8,17 @@ const typeDefs = gql`
     email: String
     avatar: String
     website: String
+    description: String
     createAt: String
   }
 
   type Token {
     token: String
+  }
+
+  type UpdateAvatar {
+    status: Boolean
+    urlAvatar: String
   }
 
   input UserInput {
@@ -29,13 +35,14 @@ const typeDefs = gql`
 
   type Query {
     # User
-    getUser: User
+    getUser(username: String!): User
   }
 
   type Mutation {
     # User
     createUser(input: UserInput): User
     loginUser(input: LoginInput): Token
+    updateAvatar(file: Upload): UpdateAvatar
   }
 `
 
