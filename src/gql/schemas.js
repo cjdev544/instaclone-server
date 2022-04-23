@@ -1,6 +1,18 @@
 const { gql } = require('apollo-server')
 
 const typeDefs = gql`
+  # *******************************************************
+  # TYPES
+  # *******************************************************
+
+  scalar Upload # Upload files type scalar
+  # Types User ********************************************
+  type File {
+    filename: String!
+    mimetype: String!
+    encoding: String!
+  }
+
   type User {
     id: ID
     name: String
@@ -17,10 +29,15 @@ const typeDefs = gql`
   }
 
   type UpdateAvatar {
-    status: Boolean
+    ok: Boolean
     urlAvatar: String
   }
 
+  # *******************************************************
+  # INPUTS
+  # *******************************************************
+
+  # Inputs User *******************************************
   input UserInput {
     name: String!
     username: String!
@@ -33,16 +50,47 @@ const typeDefs = gql`
     password: String!
   }
 
-  type Query {
-    # User
-    getUser(username: String!): User
+  input UpdateInput {
+    valueToChange: String!
+    newValue: String!
   }
 
+  input UpdatePassword {
+    lastPassword: String!
+    newPassword: String!
+  }
+
+  # *******************************************************
+  # QUERYS
+  # *******************************************************
+
+  type Query {
+    # User ************************************************
+    getUser(username: String!): User
+    search(search: String!): [User]
+
+    # Follow **********************************************
+    followNoFollow(username: String!): Boolean
+    getFollowers(username: String!): [User]
+    getFolloweds(username: String!): [User]
+  }
+
+  # *******************************************************
+  # MUTATIONS
+  # *******************************************************
+
   type Mutation {
-    # User
+    # User ************************************************
     createUser(input: UserInput): User
     loginUser(input: LoginInput): Token
-    updateAvatar(file: Upload): UpdateAvatar
+    avatarUpload(file: Upload!): UpdateAvatar
+    avatarDelete: Boolean
+    updateUser(input: UpdateInput): User
+    updatePassword(input: UpdatePassword): Boolean
+
+    # Follow
+    follow(username: String!): Boolean
+    unFollow(username: String!): Boolean
   }
 `
 
