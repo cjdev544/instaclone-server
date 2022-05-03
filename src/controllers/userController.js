@@ -75,9 +75,9 @@ const userController = {
         id: userExist.id,
         username: userExist.username,
         name: userExist.name,
+        avatar: userExist.avatar || '',
       }
-      const expiresIn = '72h'
-      const token = jwt.sign(payload, process.env.SECRET_WORD, { expiresIn })
+      const token = jwt.sign(payload, process.env.SECRET_WORD)
 
       return { token }
     } catch (err) {
@@ -89,9 +89,15 @@ const userController = {
   /**********************************************************
    *  Get User
    **********************************************************/
-  getUser: async (username) => {
+  getUser: async (username, id) => {
     try {
-      const userExist = await User.findOne({ username })
+      let userExist
+
+      if (id) {
+        userExist = await User.findById(id)
+      } else {
+        userExist = await User.findOne({ username })
+      }
 
       if (!userExist) throw new Error('Usuario no encontrado')
 

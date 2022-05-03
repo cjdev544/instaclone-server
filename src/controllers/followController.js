@@ -111,6 +111,29 @@ const followController = {
       return err
     }
   },
+
+  getNoFolloweds: async (user) => {
+    try {
+      const users = await User.find().limit(100)
+
+      const arrayUsers = []
+      for await (const userFind of users) {
+        const isNoFollowed = await Follow.findOne({ userId: user.id })
+          .where('follow')
+          .equals(userFind.id)
+
+        if (!isNoFollowed) {
+          if (user.id.toString() !== userFind.id.toString()) {
+            arrayUsers.push(userFind)
+          }
+        }
+      }
+      return arrayUsers
+    } catch (err) {
+      console.log(err)
+      return err
+    }
+  },
 }
 
 module.exports = followController

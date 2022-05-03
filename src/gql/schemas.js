@@ -33,6 +33,39 @@ const typeDefs = gql`
     urlAvatar: String
   }
 
+  # Types Publication *************************************
+  type Publication {
+    id: ID
+    userId: ID
+    imageUrl: String
+    imageFeet: String
+    createAt: String
+  }
+
+  type HomePunblication {
+    id: ID
+    userId: User
+    imageUrl: String
+    imageFeet: String
+    createAt: String
+  }
+
+  # Types coment ******************************************
+  type Coment {
+    id: ID
+    publicationId: ID
+    userId: ID
+    coment: String
+    createAt: String
+  }
+
+  type ComentUser {
+    id: ID
+    user: User
+    coment: String
+    createAt: String
+  }
+
   # *******************************************************
   # INPUTS
   # *******************************************************
@@ -60,19 +93,37 @@ const typeDefs = gql`
     newPassword: String!
   }
 
+  # Imputs coment *****************************************
+  input ComentInput {
+    publicationId: ID!
+    coment: String!
+  }
+
   # *******************************************************
   # QUERYS
   # *******************************************************
 
   type Query {
     # User ************************************************
-    getUser(username: String!): User
+    getUser(username: String, id: ID): User
     search(search: String!): [User]
 
     # Follow **********************************************
     followNoFollow(username: String!): Boolean
     getFollowers(username: String!): [User]
     getFolloweds(username: String!): [User]
+    getNoFolloweds: [User]
+
+    # Publication *****************************************
+    getUserPublications(username: String!): [Publication]
+    getPublicationsFolloweds: [HomePunblication]
+
+    # Coment **********************************************
+    getComentsPublication(publicationId: ID!): [ComentUser]
+
+    # Like ************************************************
+    isLike(publicationId: ID!): Boolean
+    countLike(publicationId: ID!): Int
   }
 
   # *******************************************************
@@ -88,9 +139,19 @@ const typeDefs = gql`
     updateUser(input: UpdateInput): User
     updatePassword(input: UpdatePassword): Boolean
 
-    # Follow
+    # Follow **********************************************
     follow(username: String!): Boolean
     unFollow(username: String!): Boolean
+
+    # Publication *****************************************
+    publish(file: Upload!, imageFeet: String): Publication
+
+    # Coment **********************************************
+    addComent(input: ComentInput): Coment
+
+    # Like ************************************************
+    addLike(publicationId: ID!): Boolean
+    removeLike(publicationId: ID!): Boolean
   }
 `
 
