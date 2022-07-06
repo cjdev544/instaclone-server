@@ -11,6 +11,8 @@ require('dotenv').config()
 
 dbConfig()
 
+const PORT = process.env.PORT || 4000
+
 const startServer = async () => {
   const server = new ApolloServer({
     typeDefs,
@@ -38,9 +40,9 @@ const startServer = async () => {
 
   server.applyMiddleware({ app })
 
-  await new Promise((r) => app.listen({ port: 4000 }, r))
+  await new Promise((r) => app.listen({ port: PORT }, r))
 
-  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+  console.log(`🚀 Server ready at ${PORT}${server.graphqlPath}`)
 }
 
 startServer()
