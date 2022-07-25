@@ -29,8 +29,6 @@ const comentController = {
     try {
       const publication = await Publication.findById(publicationId)
 
-      if (!publication) throw new Error('Publicación no encontrada')
-
       const coments = await Coment.find({ publicationId })
 
       const comentAndUser = []

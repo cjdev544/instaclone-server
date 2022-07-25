@@ -52,20 +52,30 @@ const publicationController = {
     try {
       const followedsUser = await Follow.find({ userId: user.id })
 
-      const publicationsFolloweds = []
-      for await (const followed of followedsUser) {
-        const publicationsFollowed = await Publication.find({
-          userId: followed.follow,
-        })
-          .populate('userId')
-          .sort({ createAt: -1 })
-          .limit(5)
-        publicationsFolloweds.push(...publicationsFollowed)
-      }
+      let publicationsFolloweds = []
+      let result
+      if (followedsUser.length !== 0) {
+        for await (const followed of followedsUser) {
+          const publicationsFollowed = await Publication.find({
+            userId: followed.follow,
+          })
+            .populate('userId')
+            .sort({ createAt: -1 })
+            .limit(5)
+          publicationsFolloweds.push(...publicationsFollowed)
 
-      const result = publicationsFolloweds?.sort(
-        (a, b) => new Date(b.createAt) - new Date(a.createAt)
-      )
+          result = publicationsFolloweds?.sort(
+            (a, b) => new Date(b.createAt) - new Date(a.createAt)
+          )
+        }
+      } else {
+        const othersPublications = await Publication.find()
+          .populate('userId')
+          .limit(50)
+        result = othersPublications?.sort(
+          (a, b) => new Date(b.createAt) - new Date(a.createAt)
+        )
+      }
 
       return result
     } catch (err) {

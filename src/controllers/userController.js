@@ -20,7 +20,7 @@ const userController = {
       throw new Error('El formato del correo no es correcto')
 
     try {
-      const usernameExist = await User.findOne({ formatUsername })
+      const usernameExist = await User.findOne({ username: formatUsername })
       if (usernameExist)
         throw new Error(
           'El username ya se encuentra registrado!, coloca otro nombre de usuario'
