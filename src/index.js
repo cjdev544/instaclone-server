@@ -2,6 +2,7 @@ const express = require('express')
 const { ApolloServer } = require('apollo-server-express')
 const { graphqlUploadExpress } = require('graphql-upload')
 const jwt = require('jsonwebtoken')
+const cors = require(cors)
 
 const dbConfig = require('./db')
 const typeDefs = require('./gql/schemas')
@@ -36,6 +37,7 @@ const startServer = async () => {
 
   const app = express()
 
+  app.use(cors())
   app.use(graphqlUploadExpress())
 
   server.applyMiddleware({ app })
