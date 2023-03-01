@@ -2,7 +2,7 @@ const express = require('express')
 const { ApolloServer } = require('apollo-server-express')
 const { graphqlUploadExpress } = require('graphql-upload')
 const jwt = require('jsonwebtoken')
-const cors = require(cors)
+const cors = require('cors')
 
 const dbConfig = require('./db')
 const typeDefs = require('./gql/schemas')
